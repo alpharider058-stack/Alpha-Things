@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700;800&family=Orbitron:wght@500;700;800;900&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --neon-green: #00ff66;
+  --neon-lime: #39ff14;
+  --neon-cyan: #00f0ff;
+  --dark-bg: #030704;
+  --terminal-bg: #050c07;
+  --card-bg: rgba(6, 17, 10, 0.75);
+  --border-neon: rgba(0, 255, 102, 0.35);
+}
+
+body {
+  background-color: var(--dark-bg);
+  color: #c0fce0;
+  font-family: 'JetBrains Mono', 'Share Tech Mono', monospace;
+  overflow-x: hidden;
+  selection-background-color: #00ff66;
+  selection-color: #000000;
+}
+
+::selection {
+  background: #00ff66;
+  color: #030704;
+}
+
+/* Custom Neon Glow Utilities */
+.font-cyber {
+  font-family: 'Orbitron', 'JetBrains Mono', sans-serif;
+}
+
+.text-neon {
+  color: #00ff66;
+  text-shadow: 0 0 7px rgba(0, 255, 102, 0.6), 0 0 14px rgba(0, 255, 102, 0.3);
+}
+
+.text-neon-intense {
+  color: #39ff14;
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.9), 0 0 20px rgba(57, 255, 20, 0.6), 0 0 30px rgba(57, 255, 20, 0.3);
+}
+
+.box-neon {
+  border: 1px solid rgba(0, 255, 102, 0.3);
+  box-shadow: 0 0 15px rgba(0, 255, 102, 0.12), inset 0 0 15px rgba(0, 255, 102, 0.05);
+}
+
+.box-neon-hover:hover {
+  border-color: rgba(0, 255, 102, 0.8);
+  box-shadow: 0 0 25px rgba(0, 255, 102, 0.35), inset 0 0 20px rgba(0, 255, 102, 0.15);
+}
+
+/* CRT Scanline Filter */
+.scanline-overlay {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.02),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.02)
+  );
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Pulsing radar animation */
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-radar {
+  animation: radar-sweep 8s linear infinite;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #030704;
+}
+::-webkit-scrollbar-thumb {
+  background: #00ff6644;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00ff66aa;
+}

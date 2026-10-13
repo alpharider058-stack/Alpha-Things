@@ -1,0 +1,6 @@
+{
+  "name": "Alpha-Things | Hacker Portal",
+  "description": "Portal cyberpunk con introducción cinemática Alpha-Things, lluvia de código binario y accesos directos a Cine-OS y herramientas Alpha.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
