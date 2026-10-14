@@ -244,6 +244,88 @@ export function CustomizationModal({ isOpen, onClose }: CustomizationModalProps)
                   ))}
                 </div>
               </div>
+
+              {/* Option: Comportamiento al hacer clic en la pantalla */}
+              <div className="pt-4 border-t border-[#00ff66]/15 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <h5 className="text-xs font-mono font-bold text-white flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-[#39ff14]" />
+                    <span>Comportamiento del Color al Hacer Clic en Pantalla:</span>
+                  </h5>
+                  <span className={`text-[11px] font-mono px-2 py-0.5 rounded border ${
+                    settings.clickChangesColor === true
+                      ? 'bg-[#00ff66]/15 border-[#00ff66]/40 text-[#39ff14]'
+                      : 'bg-white/5 border-white/20 text-white/60'
+                  }`}>
+                    {settings.clickChangesColor === true ? 'Modo: Cambio Dinámico' : 'Modo: Color Fijo (Estable)'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {/* Option A: NO cambiar de color (Color Fijo) */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      cyberAudio.playLaserBlip();
+                      updateSettings({ clickChangesColor: false });
+                    }}
+                    className={`p-3 rounded-lg border text-left transition-all flex items-start gap-3 ${
+                      settings.clickChangesColor !== true
+                        ? 'bg-[#05180a] border-[#00ff66] shadow-[0_0_15px_rgba(0,255,102,0.25)]'
+                        : 'bg-[#020703] border-white/10 hover:border-white/25 text-white/60'
+                    }`}
+                  >
+                    <div className={`mt-0.5 p-1 rounded-full border ${
+                      settings.clickChangesColor !== true
+                        ? 'border-[#00ff66] bg-[#00ff66]/20 text-[#39ff14]'
+                        : 'border-white/30 text-white/40'
+                    }`}>
+                      <Check className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold font-mono text-white flex items-center gap-1.5">
+                        <span>Color Fijo</span>
+                        <span className="text-[10px] text-[#00ff66] font-normal px-1.5 py-0.2 bg-[#00ff66]/10 rounded border border-[#00ff66]/30">
+                          Recomendado
+                        </span>
+                      </div>
+                      <p className="text-[11px] font-mono text-[#a5f3cf]/70 mt-0.5 leading-snug">
+                        No cambiar de color. Tu tema favorito se mantiene siempre fijo al hacer clic.
+                      </p>
+                    </div>
+                  </button>
+
+                  {/* Option B: Sí cambiar de color al hacer clic */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      cyberAudio.playLaserBlip();
+                      updateSettings({ clickChangesColor: true });
+                    }}
+                    className={`p-3 rounded-lg border text-left transition-all flex items-start gap-3 ${
+                      settings.clickChangesColor === true
+                        ? 'bg-[#05180a] border-[#00ff66] shadow-[0_0_15px_rgba(0,255,102,0.25)]'
+                        : 'bg-[#020703] border-white/10 hover:border-white/25 text-white/60'
+                    }`}
+                  >
+                    <div className={`mt-0.5 p-1 rounded-full border ${
+                      settings.clickChangesColor === true
+                        ? 'border-[#00ff66] bg-[#00ff66]/20 text-[#39ff14]'
+                        : 'border-white/30 text-white/40'
+                    }`}>
+                      <Check className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold font-mono text-white">
+                        Rotar Color al Clic
+                      </div>
+                      <p className="text-[11px] font-mono text-[#a5f3cf]/70 mt-0.5 leading-snug">
+                        Al hacer clic en el fondo de la pantalla, alterna cíclicamente entre las paletas neón.
+                      </p>
+                    </div>
+                  </button>
+                </div>
+              </div>
             </div>
           )}
 
@@ -380,6 +462,86 @@ export function CustomizationModal({ isOpen, onClose }: CustomizationModalProps)
                   </div>
                 </div>
               </div>
+
+              {/* Option: Cambiar color al hacer clic */}
+              <div className="pt-4 border-t border-[#00ff66]/15 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <h5 className="text-xs font-mono font-bold text-white flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-[#39ff14]" />
+                    <span>Cambio de Color al Hacer Clic en Pantalla:</span>
+                  </h5>
+                  <span className={`text-[11px] font-mono px-2 py-0.5 rounded border ${
+                    settings.clickChangesColor === true
+                      ? 'bg-[#00ff66]/15 border-[#00ff66]/40 text-[#39ff14]'
+                      : 'bg-white/5 border-white/20 text-white/60'
+                  }`}>
+                    {settings.clickChangesColor === true ? 'Activado' : 'Desactivado (Color Fijo)'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      cyberAudio.playLaserBlip();
+                      updateSettings({ clickChangesColor: false });
+                    }}
+                    className={`p-3 rounded-lg border text-left transition-all flex items-start gap-3 ${
+                      settings.clickChangesColor !== true
+                        ? 'bg-[#05180a] border-[#00ff66] shadow-[0_0_15px_rgba(0,255,102,0.25)]'
+                        : 'bg-[#020703] border-white/10 hover:border-white/25 text-white/60'
+                    }`}
+                  >
+                    <div className={`mt-0.5 p-1 rounded-full border ${
+                      settings.clickChangesColor !== true
+                        ? 'border-[#00ff66] bg-[#00ff66]/20 text-[#39ff14]'
+                        : 'border-white/30 text-white/40'
+                    }`}>
+                      <Check className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold font-mono text-white flex items-center gap-1.5">
+                        <span>Color Fijo</span>
+                        <span className="text-[10px] text-[#00ff66] font-normal px-1.5 py-0.2 bg-[#00ff66]/10 rounded border border-[#00ff66]/30">
+                          Recomendado
+                        </span>
+                      </div>
+                      <p className="text-[11px] font-mono text-[#a5f3cf]/70 mt-0.5 leading-snug">
+                        No cambiar de color. Tu tema favorito se mantiene siempre fijo al hacer clic.
+                      </p>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      cyberAudio.playLaserBlip();
+                      updateSettings({ clickChangesColor: true });
+                    }}
+                    className={`p-3 rounded-lg border text-left transition-all flex items-start gap-3 ${
+                      settings.clickChangesColor === true
+                        ? 'bg-[#05180a] border-[#00ff66] shadow-[0_0_15px_rgba(0,255,102,0.25)]'
+                        : 'bg-[#020703] border-white/10 hover:border-white/25 text-white/60'
+                    }`}
+                  >
+                    <div className={`mt-0.5 p-1 rounded-full border ${
+                      settings.clickChangesColor === true
+                        ? 'border-[#00ff66] bg-[#00ff66]/20 text-[#39ff14]'
+                        : 'border-white/30 text-white/40'
+                    }`}>
+                      <Check className="w-3.5 h-3.5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold font-mono text-white">
+                        Rotar Color al Clic
+                      </div>
+                      <p className="text-[11px] font-mono text-[#a5f3cf]/70 mt-0.5 leading-snug">
+                        Al hacer clic en el fondo de la pantalla, alterna cíclicamente entre las paletas neón.
+                      </p>
+                    </div>
+                  </button>
+                </div>
+              </div>
             </div>
           )}
 
@@ -487,6 +649,7 @@ export function CustomizationModal({ isOpen, onClose }: CustomizationModalProps)
                 scanlines: 'subtle',
                 glowIntensity: 'medium',
                 interactionMode: 'disperse',
+                clickChangesColor: true,
               });
             }}
             className="flex items-center gap-1.5 text-[#a5f3cf]/60 hover:text-[#00ff66] transition-colors"

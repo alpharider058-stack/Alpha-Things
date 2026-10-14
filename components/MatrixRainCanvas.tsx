@@ -98,6 +98,7 @@ export function MatrixRainCanvas({
   const activeMode: InteractionMode = settings?.interactionMode || 'disperse';
   const activeSpeed = settings?.matrixSpeed || 'normal';
   const activeScanlines = settings?.scanlines || 'subtle';
+  const activeClickChangesColor = settings?.clickChangesColor ?? false;
 
   const [activeThemeNotice, setActiveThemeNotice] = useState<string | null>(null);
 
@@ -106,6 +107,7 @@ export function MatrixRainCanvas({
   const modeRef = useRef<InteractionMode>(activeMode);
   const bgEffectRef = useRef<BackgroundEffect>(activeBgEffect);
   const speedRef = useRef(activeSpeed);
+  const clickChangesColorRef = useRef(activeClickChangesColor);
   const shockwavesRef = useRef<Shockwave[]>([]);
 
   useEffect(() => {
@@ -123,6 +125,10 @@ export function MatrixRainCanvas({
   useEffect(() => {
     speedRef.current = activeSpeed;
   }, [activeSpeed]);
+
+  useEffect(() => {
+    clickChangesColorRef.current = activeClickChangesColor;
+  }, [activeClickChangesColor]);
 
   const mousePosRef = useRef<{
     x: number;
@@ -284,6 +290,24 @@ export function MatrixRainCanvas({
 
     const handleWindowPointerDown = (e: MouseEvent) => {
       if (!interactive) return;
+
+      // Do not trigger background effects or color change when clicking interactive UI elements
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.closest('button') ||
+          target.closest('input') ||
+          target.closest('textarea') ||
+          target.closest('a') ||
+          target.closest('select') ||
+          target.closest('[role="button"]') ||
+          target.closest('[role="dialog"]') ||
+          target.closest('.interactive-clickable') ||
+          target.closest('.modal-content'))
+      ) {
+        return;
+      }
+
       const currentPal = COLOR_PALETTES[themeRef.current] || COLOR_PALETTES.matrix;
       shockwavesRef.current.push({
         x: e.clientX,
@@ -295,7 +319,13 @@ export function MatrixRainCanvas({
         color: currentPal.glow,
       });
 
-      cycleColorTheme(true);
+      // Strictly only cycle color if clickChangesColor is explicitly TRUE
+      if (clickChangesColorRef.current === true) {
+        cycleColorTheme(true);
+      } else {
+        // Subtle cyber blip feedback without altering background color
+        cyberAudio.playLaserBlip();
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -589,12 +619,48 @@ export function MatrixRainCanvas({
             onClick={() => cycleColorTheme(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-full bg-[#051408] border border-[#00ff66]/30 hover:border-[#00ff66] transition-colors"
             style={{ color: (COLOR_PALETTES[activeColorTheme] || COLOR_PALETTES.matrix).borderAccent }}
-            title="Cambiar color del código (o haz clic en la pantalla)"
+            title="Cambiar paleta de color manual"
           >
             <Palette className="w-3.5 h-3.5" />
             <span className="hidden sm:inline font-bold">
               {(COLOR_PALETTES[activeColorTheme] || COLOR_PALETTES.matrix).name}
             </span>
+          </button>
+
+          {/* Toggle Click Changes Color: NO / SÍ */}
+          <button
+            onClick={() => {
+              const nextVal = !activeClickChangesColor;
+              cyberAudio.playLaserBlip();
+              updateSettings({ clickChangesColor: nextVal });
+              setActiveThemeNotice(
+                nextVal
+                  ? 'Clic en pantalla: Cambia Color'
+                  : 'Clic en pantalla: Color Fijo (No cambia)'
+              );
+            }}
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono rounded-full border transition-all ${
+              activeClickChangesColor
+                ? 'bg-[#00ff66]/20 border-[#00ff66] text-[#39ff14] shadow-[0_0_10px_rgba(0,255,102,0.3)]'
+                : 'bg-[#051408] border-white/20 text-white/60 hover:text-white hover:border-white/40'
+            }`}
+            title={
+              activeClickChangesColor
+                ? 'Clic en pantalla: Cambia de color (Haz clic para fijar color y NO cambiar)'
+                : 'Clic en pantalla: Color FIJO (NO cambia de color al hacer clic)'
+            }
+          >
+            {activeClickChangesColor ? (
+              <>
+                <Sparkles className="w-3.5 h-3.5 text-[#39ff14]" />
+                <span className="hidden sm:inline">Clic: Cambia</span>
+              </>
+            ) : (
+              <>
+                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                <span className="hidden sm:inline">Clic: Color Fijo</span>
+              </>
+            )}
           </button>
 
           {/* Interaction Mode: Disperse vs Gather */}

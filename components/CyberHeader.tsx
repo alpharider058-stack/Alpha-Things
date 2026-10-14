@@ -76,6 +76,13 @@ export function CyberHeader({
             Cine-OS
           </button>
           <button
+            onClick={() => handleNavClick('seccion-ia')}
+            className="text-[#00f0ff] font-semibold hover:text-[#38bdf8] transition-colors whitespace-nowrap shrink-0 hover:underline underline-offset-8 decoration-[#00f0ff]/70 flex items-center gap-1"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] animate-pulse" />
+            Hub IAs
+          </button>
+          <button
             onClick={() => handleNavClick('alpha-links')}
             className="hover:text-[#00ff66] transition-colors whitespace-nowrap shrink-0 hover:underline underline-offset-8 decoration-[#00ff66]/50"
           >

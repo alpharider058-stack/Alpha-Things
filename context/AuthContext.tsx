@@ -42,7 +42,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (rawAccounts && activeId) {
         const accounts: StoredAccount[] = JSON.parse(rawAccounts);
         const found = accounts.find((a) => a.profile.id === activeId);
-        return found ? found.profile : null;
+        if (found) {
+          const hasMigratedClickOption = localStorage.getItem('alpha_click_color_migrated_v3');
+          const mergedSettings: UserSettings = {
+            ...DEFAULT_USER_SETTINGS,
+            ...found.profile.settings,
+          };
+          if (!hasMigratedClickOption) {
+            mergedSettings.clickChangesColor = false;
+            try {
+              localStorage.setItem('alpha_click_color_migrated_v3', 'true');
+            } catch {}
+          }
+          return {
+            ...found.profile,
+            settings: mergedSettings,
+          };
+        }
       }
     } catch {
       return null;

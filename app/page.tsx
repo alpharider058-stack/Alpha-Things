@@ -11,6 +11,7 @@ import { CyberHeader } from '@/components/CyberHeader';
 import { HeroSection } from '@/components/HeroSection';
 import { GtaSection } from '@/components/GtaSection';
 import { FeaturedCineOS } from '@/components/FeaturedCineOS';
+import { AiHubSection } from '@/components/AiHubSection';
 import { AlphaLinksSection } from '@/components/AlphaLinksSection';
 import { HackerTerminal } from '@/components/HackerTerminal';
 import { CyberFooter } from '@/components/CyberFooter';
@@ -119,6 +120,7 @@ function PortalContent() {
               <HeroSection onReplayIntro={handleReplayIntro} />
               <GtaSection onPreview={handleOpenPreview} />
               <FeaturedCineOS onPreview={handleOpenPreview} />
+              <AiHubSection onPreview={handleOpenPreview} />
               <AlphaLinksSection
                 onPreview={handleOpenPreview}
                 onOpenAddLink={() => setIsAddLinkOpen(true)}

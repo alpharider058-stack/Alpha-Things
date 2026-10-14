@@ -28,6 +28,7 @@ export interface UserSettings {
   audioMuted: boolean;
   soundVolume: number;
   terminalExpanded: boolean;
+  clickChangesColor: boolean;
 }
 
 export interface UserProfile {
@@ -55,4 +56,5 @@ export const DEFAULT_USER_SETTINGS: UserSettings = {
   audioMuted: false,
   soundVolume: 0.8,
   terminalExpanded: false,
+  clickChangesColor: false,
 };

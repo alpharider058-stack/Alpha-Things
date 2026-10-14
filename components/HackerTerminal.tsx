@@ -53,6 +53,8 @@ export function HackerTerminal({ onReplayIntro, onPreview, onOpenCustomizer }: H
         <div className="space-y-1 text-xs text-[#a5f3cf]">
           <p className="text-[#39ff14] font-bold">Comandos disponibles en la consola:</p>
           <p><span className="text-[#39ff14] font-bold">gta</span> / <span className="text-[#39ff14] font-bold">gtav</span> : Juega a GTA V Online (https://gta.deloskiyt.pl/)</p>
+          <p><span className="text-[#00f0ff] font-bold">ia</span> / <span className="text-[#00f0ff] font-bold">ais</span> : Abre la Matriz de Inteligencias Artificiales</p>
+          <p><span className="text-[#00f0ff] font-bold">perplexity</span> / <span className="text-[#00f0ff] font-bold">claude</span> / <span className="text-[#00f0ff] font-bold">manus</span> / <span className="text-[#00f0ff] font-bold">copilot</span> / <span className="text-[#00f0ff] font-bold">arena</span> : Acceso rápido a cada IA</p>
           <p><span className="text-[#00ff66] font-bold">cineos</span> : Abre Cine-OS (https://cineosweb.github.io/)</p>
           <p><span className="text-[#00ff66] font-bold">alpha5</span> : Abre Classroom Alpha Five (https://classroom-alpha-five.vercel.app/)</p>
           <p><span className="text-[#00ff66] font-bold">hack</span> : Abre Alpha Hack (https://alpha-hack.vercel.app/)</p>
@@ -78,6 +80,30 @@ export function HackerTerminal({ onReplayIntro, onPreview, onOpenCustomizer }: H
         </div>
       );
       window.open('https://gta.deloskiyt.pl/', '_blank');
+    } else if (normalized === 'ia' || normalized === 'ais' || normalized === 'hub-ia') {
+      outputNode = (
+        <div className="text-xs text-[#00f0ff] space-y-1">
+          <p className="font-bold">Desplazando hacia la Matriz de Inteligencias Artificiales...</p>
+          <p className="text-[11px] text-[#a5f3cf]/70">5 IAs disponibles: Perplexity, Claude, Manus, Copilot, Arena AI</p>
+        </div>
+      );
+      const el = document.getElementById('seccion-ia');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else if (normalized === 'perplexity') {
+      outputNode = <div className="text-xs text-[#00f0ff]">Conectando a Perplexity AI (Búsqueda web con fuentes)... https://www.perplexity.ai/</div>;
+      window.open('https://www.perplexity.ai/', '_blank');
+    } else if (normalized === 'claude') {
+      outputNode = <div className="text-xs text-[#d946ef]">Conectando a Claude AI (Razonamiento y código)... https://claude.ai/</div>;
+      window.open('https://claude.ai/', '_blank');
+    } else if (normalized === 'manus') {
+      outputNode = <div className="text-xs text-[#39ff14]">Iniciando Agente Autónomo Manus AI... https://manus.im/app</div>;
+      window.open('https://manus.im/app', '_blank');
+    } else if (normalized === 'copilot') {
+      outputNode = <div className="text-xs text-[#ffb703]">Iniciando Microsoft Copilot (DALL-E e imágenes)... https://copilot.microsoft.com/</div>;
+      window.open('https://copilot.microsoft.com/', '_blank');
+    } else if (normalized === 'arena' || normalized === 'arena-ai') {
+      outputNode = <div className="text-xs text-[#ff0055]">Conectando al Coliseo de Modelos Chatbot Arena (Direct Max)... https://arena.ai/text/direct?model_a=max</div>;
+      window.open('https://arena.ai/text/direct?model_a=max', '_blank');
     } else if (normalized === 'cineos') {
       outputNode = (
         <div className="text-xs text-[#39ff14]">
