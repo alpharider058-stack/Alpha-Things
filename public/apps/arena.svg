@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="arenaBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e1307"/>
+      <stop offset="100%" stop-color="#0a0502"/>
+    </linearGradient>
+    <linearGradient id="arenaGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="116" height="116" rx="28" fill="url(#arenaBg)" stroke="rgba(251,191,36,0.3)" stroke-width="1.5"/>
+  <!-- Arena LMSYS Colosseum & Swords Emblem -->
+  <g transform="translate(64,64) scale(0.9)">
+    <ellipse cx="0" cy="0" rx="36" ry="24" fill="none" stroke="url(#arenaGold)" stroke-width="4.5" stroke-dasharray="14 5"/>
+    <ellipse cx="0" cy="0" rx="24" ry="16" fill="none" stroke="#fbbf24" stroke-width="3.5"/>
+    <path d="M -18 18 L 18 -18 M 18 18 L -18 -18" stroke="#fef08a" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="0" cy="0" r="7" fill="#f59e0b" stroke="#fff" stroke-width="1.5"/>
+  </g>
+</svg>

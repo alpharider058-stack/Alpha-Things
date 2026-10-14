@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="cineBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0c1e19"/>
+      <stop offset="100%" stop-color="#020906"/>
+    </linearGradient>
+    <linearGradient id="cineGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="116" height="116" rx="28" fill="url(#cineBg)" stroke="rgba(16,185,129,0.3)" stroke-width="1.5"/>
+  <!-- Cine-OS Monitor / Screen + Play -->
+  <rect x="26" y="32" width="76" height="52" rx="8" fill="none" stroke="url(#cineGrad)" stroke-width="4"/>
+  <path d="M 54 46 L 76 58 L 54 70 Z" fill="url(#cineGrad)"/>
+  <line x1="44" y1="92" x2="84" y2="92" stroke="url(#cineGrad)" stroke-width="4" stroke-linecap="round"/>
+  <line x1="64" y1="84" x2="64" y2="92" stroke="url(#cineGrad)" stroke-width="4"/>
+</svg>

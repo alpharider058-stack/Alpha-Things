@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="copilotBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="ribbon1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0078d4"/>
+      <stop offset="50%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <linearGradient id="ribbon2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="116" height="116" rx="28" fill="url(#copilotBg)" stroke="rgba(99,102,241,0.3)" stroke-width="1.5"/>
+  <!-- Microsoft Copilot Torus Ribbon Loop -->
+  <g transform="translate(64, 64) scale(0.95)">
+    <path d="M -26 -16 C -26 -32 -6 -36 8 -22 C 16 -14 26 2 26 16 C 26 32 6 36 -8 22 C -16 14 -26 -2 -26 -16 Z" fill="none" stroke="url(#ribbon1)" stroke-width="14" stroke-linecap="round"/>
+    <path d="M 26 16 C 26 32 6 36 -8 22 C -16 14 -26 -2 -26 -16" fill="none" stroke="url(#ribbon2)" stroke-width="14" stroke-linecap="round"/>
+  </g>
+</svg>

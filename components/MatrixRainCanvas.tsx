@@ -70,6 +70,22 @@ const COLOR_PALETTES: Record<ColorTheme, ColorPalette> = {
     spark: '#d9f99d',
     borderAccent: '#84cc16',
   },
+  obsidian: {
+    name: 'Obsidiana Liquid Glass',
+    lead: '#ffffff',
+    trail: '#38bdf8',
+    glow: '#818cf8',
+    spark: '#e0e7ff',
+    borderAccent: '#38bdf8',
+  },
+  'liquid-smoke': {
+    name: 'Liquid Smoke',
+    lead: '#ffffff',
+    trail: '#6366f1',
+    glow: '#a855f7',
+    spark: '#f3e8ff',
+    borderAccent: '#6366f1',
+  },
 };
 
 const THEME_CYCLE: ColorTheme[] = ['matrix', 'cyan', 'purple', 'amber', 'crimson', 'lime'];

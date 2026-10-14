@@ -1,10 +1,11 @@
-export type ColorTheme = 'matrix' | 'cyan' | 'purple' | 'amber' | 'crimson' | 'lime';
-export type FontFamily = 'jetbrains' | 'orbitron' | 'sharetech' | 'rajdhani' | 'fira' | 'inter';
+export type ColorTheme = 'matrix' | 'cyan' | 'purple' | 'amber' | 'crimson' | 'lime' | 'obsidian' | 'liquid-smoke';
+export type FontFamily = 'jetbrains' | 'orbitron' | 'sharetech' | 'rajdhani' | 'fira' | 'inter' | 'sf-pro' | 'outfit';
 export type FontSize = 'compact' | 'normal' | 'large';
-export type BackgroundEffect = 'matrix' | 'binary' | 'grid' | 'starfield' | 'minimal';
+export type BackgroundEffect = 'matrix' | 'binary' | 'grid' | 'starfield' | 'minimal' | 'liquid-glass' | 'aurora';
 export type ScanlineIntensity = 'none' | 'subtle' | 'intense';
 export type GlowIntensity = 'low' | 'medium' | 'high';
 export type InteractionMode = 'disperse' | 'gather';
+export type WallpaperId = 'liquid-smoke' | 'obsidian-glow' | 'aurora-glass' | 'platinum-mesh' | 'cosmic-dark' | 'deep-abyss';
 
 export interface CustomLink {
   id: string;
@@ -29,6 +30,9 @@ export interface UserSettings {
   soundVolume: number;
   terminalExpanded: boolean;
   clickChangesColor: boolean;
+  wallpaper: WallpaperId;
+  glassBlur: 'low' | 'medium' | 'high';
+  dockPosition: 'bottom' | 'left';
 }
 
 export interface UserProfile {
@@ -45,16 +49,19 @@ export interface UserProfile {
 }
 
 export const DEFAULT_USER_SETTINGS: UserSettings = {
-  colorTheme: 'matrix',
-  fontFamily: 'jetbrains',
+  colorTheme: 'obsidian',
+  fontFamily: 'inter',
   fontSize: 'normal',
-  bgEffect: 'matrix',
+  bgEffect: 'liquid-glass',
   matrixSpeed: 'normal',
-  scanlines: 'subtle',
+  scanlines: 'none',
   glowIntensity: 'medium',
   interactionMode: 'disperse',
   audioMuted: false,
   soundVolume: 0.8,
   terminalExpanded: false,
   clickChangesColor: false,
+  wallpaper: 'liquid-smoke',
+  glassBlur: 'high',
+  dockPosition: 'bottom',
 };
