@@ -2,34 +2,38 @@ import type {Metadata} from 'next';
 import './globals.css'; // Global styles
 
 export const metadata: Metadata = {
-  title: 'classroom',
-  description: 'classroom',
+  title: 'Inicio - Classroom',
+  description: 'Inicio - Classroom',
   icons: {
     icon: [
       { url: '/classroom-logo.svg', type: 'image/svg+xml' },
+      { url: '/favicon.png', type: 'image/png' },
+      { url: '/favicon.ico' },
     ],
-    shortcut: '/classroom-logo.svg',
-    apple: '/classroom-logo.svg',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'classroom',
-    description: 'classroom',
+    title: 'Inicio - Classroom',
+    description: 'Inicio - Classroom',
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: 'classroom',
-    description: 'classroom',
+    title: 'Inicio - Classroom',
+    description: 'Inicio - Classroom',
   },
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
+        <title>Inicio - Classroom</title>
         <link rel="icon" href="/classroom-logo.svg" type="image/svg+xml" />
-        <link rel="shortcut icon" href="/classroom-logo.svg" />
-        <link rel="apple-touch-icon" href="/classroom-logo.svg" />
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
       </head>
       <body suppressHydrationWarning>{children}</body>
     </html>

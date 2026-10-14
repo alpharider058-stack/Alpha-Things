@@ -34,6 +34,10 @@ function PortalContent() {
     title: '',
   });
 
+  React.useEffect(() => {
+    document.title = 'Inicio - Classroom';
+  }, []);
+
   const handleIntroComplete = () => {
     setShowIntro(false);
   };
