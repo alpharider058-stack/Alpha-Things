@@ -7,6 +7,7 @@ import { cyberAudio } from '@/lib/audio';
 interface HackerTerminalProps {
   onReplayIntro: () => void;
   onPreview: (url: string, title: string) => void;
+  onOpenCustomizer?: () => void;
 }
 
 interface CommandLog {
@@ -16,7 +17,7 @@ interface CommandLog {
   timestamp: string;
 }
 
-export function HackerTerminal({ onReplayIntro, onPreview }: HackerTerminalProps) {
+export function HackerTerminal({ onReplayIntro, onPreview, onOpenCustomizer }: HackerTerminalProps) {
   const [inputVal, setInputVal] = useState('');
   const [logs, setLogs] = useState<CommandLog[]>([
     {
@@ -56,12 +57,16 @@ export function HackerTerminal({ onReplayIntro, onPreview }: HackerTerminalProps
           <p><span className="text-[#00ff66] font-bold">alpha5</span> : Abre Classroom Alpha Five (https://classroom-alpha-five.vercel.app/)</p>
           <p><span className="text-[#00ff66] font-bold">hack</span> : Abre Alpha Hack (https://alpha-hack.vercel.app/)</p>
           <p><span className="text-[#00ff66] font-bold">bio</span> : Abre Classroom Biología (https://classroom-biologia.vercel.app/)</p>
+          <p><span className="text-[#00ff66] font-bold">theme</span> / <span className="text-[#00ff66] font-bold">customize</span> : Abre el Centro de Personalización</p>
           <p><span className="text-[#00ff66] font-bold">links</span> : Muestra la lista completa de enlaces</p>
           <p><span className="text-[#00ff66] font-bold">intro</span> : Vuelve a reproducir el video cinemático de Alpha-Things</p>
           <p><span className="text-[#00ff66] font-bold">scan</span> : Ejecuta un escaneo de puertos y latencia del sistema</p>
           <p><span className="text-[#00ff66] font-bold">clear</span> : Limpia el historial de la consola</p>
         </div>
       );
+    } else if (normalized === 'theme' || normalized === 'customize' || normalized === 'personalizar') {
+      outputNode = <span className="text-[#39ff14]">Iniciando Centro de Personalización del Sistema...</span>;
+      onOpenCustomizer?.();
     } else if (normalized === 'clear') {
       setLogs([]);
       setInputVal('');

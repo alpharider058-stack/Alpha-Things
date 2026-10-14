@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700;800&family=Orbitron:wght@500;700;800;900&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;600;700;800&family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap');
 
 :root {
   --neon-green: #00ff66;
@@ -10,34 +10,80 @@
   --terminal-bg: #050c07;
   --card-bg: rgba(6, 17, 10, 0.75);
   --border-neon: rgba(0, 255, 102, 0.35);
+  --accent-primary: #00ff66;
+  --accent-glow: #39ff14;
 }
 
 body {
   background-color: var(--dark-bg);
   color: #c0fce0;
-  font-family: 'JetBrains Mono', 'Share Tech Mono', monospace;
   overflow-x: hidden;
   selection-background-color: #00ff66;
   selection-color: #000000;
 }
 
 ::selection {
-  background: #00ff66;
+  background: var(--accent-primary, #00ff66);
   color: #030704;
 }
 
-/* Custom Neon Glow Utilities */
+/* Font Family Classes */
+.font-jetbrains {
+  font-family: 'JetBrains Mono', monospace;
+}
+.font-orbitron {
+  font-family: 'Orbitron', 'JetBrains Mono', sans-serif;
+}
+.font-sharetech {
+  font-family: 'Share Tech Mono', monospace;
+}
+.font-rajdhani {
+  font-family: 'Rajdhani', sans-serif;
+}
+.font-fira {
+  font-family: 'Fira Code', monospace;
+}
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
 .font-cyber {
   font-family: 'Orbitron', 'JetBrains Mono', sans-serif;
 }
 
+/* Theme Color Classes */
+.theme-matrix {
+  --accent-primary: #00ff66;
+  --accent-glow: #39ff14;
+}
+.theme-cyan {
+  --accent-primary: #00f0ff;
+  --accent-glow: #38bdf8;
+}
+.theme-purple {
+  --accent-primary: #d946ef;
+  --accent-glow: #a855f7;
+}
+.theme-amber {
+  --accent-primary: #ffb703;
+  --accent-glow: #fb8500;
+}
+.theme-crimson {
+  --accent-primary: #ff0055;
+  --accent-glow: #ef4444;
+}
+.theme-lime {
+  --accent-primary: #84cc16;
+  --accent-glow: #a3e635;
+}
+
 .text-neon {
-  color: #00ff66;
+  color: var(--accent-primary, #00ff66);
   text-shadow: 0 0 7px rgba(0, 255, 102, 0.6), 0 0 14px rgba(0, 255, 102, 0.3);
 }
 
 .text-neon-intense {
-  color: #39ff14;
+  color: var(--accent-glow, #39ff14);
   text-shadow: 0 0 10px rgba(57, 255, 20, 0.9), 0 0 20px rgba(57, 255, 20, 0.6), 0 0 30px rgba(57, 255, 20, 0.3);
 }
 

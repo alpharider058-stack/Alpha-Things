@@ -2,22 +2,27 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Play, Volume2, VolumeX, Terminal, ExternalLink } from 'lucide-react';
+import { Play, Volume2, VolumeX, Sliders, LogOut, Plus, User, Shield } from 'lucide-react';
 import { cyberAudio } from '@/lib/audio';
+import { useAuth } from '@/context/AuthContext';
 
 interface CyberHeaderProps {
   onReplayIntro: () => void;
+  onOpenCustomizer: () => void;
+  onOpenAddLink: () => void;
   isMuted: boolean;
   onToggleMute: () => void;
-  activeSection: string;
 }
 
 export function CyberHeader({
   onReplayIntro,
+  onOpenCustomizer,
+  onOpenAddLink,
   isMuted,
   onToggleMute,
-  activeSection,
 }: CyberHeaderProps) {
+  const { user, logout } = useAuth();
+
   const handleNavClick = (sectionId: string) => {
     cyberAudio.playBeep(720, 0.05, 'sine');
     const el = document.getElementById(sectionId);
@@ -28,8 +33,8 @@ export function CyberHeader({
 
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[#030704]/90 border-b border-[#00ff66]/25 transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
-        {/* Zone 1: Brand Wordmark with Classroom Logo */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4 md:gap-8">
+        {/* Zone 1: Brand Wordmark with Classroom Stealth Logo */}
         <div className="flex items-center gap-3 shrink-0">
           <a
             href="#"
@@ -55,8 +60,8 @@ export function CyberHeader({
           </a>
         </div>
 
-        {/* Zone 2: 4 Clean Single-Line Nav Links */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-mono text-[#a5f3cf]">
+        {/* Zone 2: Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-5 text-xs font-mono text-[#a5f3cf]">
           <button
             onClick={() => handleNavClick('gta-v')}
             className="text-[#39ff14] font-semibold hover:text-[#00ff66] transition-colors whitespace-nowrap shrink-0 hover:underline underline-offset-8 decoration-[#39ff14]/70 flex items-center gap-1.5"
@@ -82,21 +87,41 @@ export function CyberHeader({
           >
             Terminal
           </button>
-          <button
-            onClick={() => handleNavClick('telemetria')}
-            className="hover:text-[#00ff66] transition-colors whitespace-nowrap shrink-0 hover:underline underline-offset-8 decoration-[#00ff66]/50"
-          >
-            Diagnóstico
-          </button>
         </nav>
 
-        {/* Zone 3: 1 Primary Action + Quick Controls */}
-        <div className="flex items-center gap-3 shrink-0">
-          {/* Audio toggle button */}
+        {/* Zone 3: User Profile & Quick Actions */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          {/* Customizer Button */}
+          <button
+            onClick={() => {
+              cyberAudio.playLaserBlip();
+              onOpenCustomizer();
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono text-[#00ff66] bg-[#051408] border border-[#00ff66]/35 rounded hover:border-[#00ff66] hover:bg-[#00ff66]/10 transition-colors"
+            title="Abrir Menú de Personalización"
+          >
+            <Sliders className="w-3.5 h-3.5 text-[#39ff14]" />
+            <span className="hidden sm:inline">Personalizar</span>
+          </button>
+
+          {/* Add Link Button */}
+          <button
+            onClick={() => {
+              cyberAudio.playLaserBlip();
+              onOpenAddLink();
+            }}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-mono text-[#a5f3cf] bg-[#051108] border border-[#00ff66]/20 rounded hover:border-[#00ff66] transition-colors"
+            title="Añadir Enlace a mi Portal"
+          >
+            <Plus className="w-3.5 h-3.5 text-[#00f0ff]" />
+            <span className="hidden md:inline">+ Enlace</span>
+          </button>
+
+          {/* Audio toggle */}
           <button
             onClick={onToggleMute}
             aria-label={isMuted ? 'Activar audio' : 'Silenciar audio'}
-            className="p-2 text-[#00ff66]/80 hover:text-[#00ff66] bg-[#051108] border border-[#00ff66]/30 rounded hover:border-[#00ff66] transition-colors"
+            className="p-1.5 text-[#00ff66]/80 hover:text-[#00ff66] bg-[#051108] border border-[#00ff66]/30 rounded hover:border-[#00ff66] transition-colors"
             title={isMuted ? 'Sonido desactivado' : 'Sonido activado'}
           >
             {isMuted ? (
@@ -106,16 +131,44 @@ export function CyberHeader({
             )}
           </button>
 
-          {/* Primary Action Button: Replay Intro */}
+          {/* User Profile Capsule */}
+          {user && (
+            <div className="flex items-center gap-2 pl-2 border-l border-[#00ff66]/20">
+              <div
+                className="flex items-center gap-1.5 px-2.5 py-1 bg-[#051408] border border-[#00ff66]/30 rounded text-xs font-mono"
+                title={`Operador: ${user.username} (${user.email})`}
+              >
+                <span className="text-sm select-none">{user.avatar}</span>
+                <span className="hidden sm:inline font-bold text-[#00ff66] max-w-[90px] truncate">
+                  {user.username}
+                </span>
+              </div>
+
+              {/* Logout button */}
+              <button
+                onClick={() => {
+                  cyberAudio.playLaserBlip();
+                  logout();
+                }}
+                className="p-1.5 text-[#00ff66]/60 hover:text-red-400 bg-[#051108] border border-[#00ff66]/20 hover:border-red-400/50 rounded transition-colors"
+                title="Cerrar sesión"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+
+          {/* Replay Intro */}
           <button
             onClick={() => {
               cyberAudio.playLaserBlip();
               onReplayIntro();
             }}
-            className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-cyber font-bold tracking-wider text-[#030704] bg-[#00ff66] hover:bg-[#39ff14] rounded transition-all shadow-[0_0_12px_rgba(0,255,102,0.6)] hover:shadow-[0_0_20px_rgba(57,255,20,0.8)] whitespace-nowrap shrink-0"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-cyber font-bold tracking-wider text-[#030704] bg-[#00ff66] hover:bg-[#39ff14] rounded transition-all shadow-[0_0_10px_rgba(0,255,102,0.5)] whitespace-nowrap shrink-0"
+            title="Volver a reproducir la animación de inicio"
           >
-            <Play className="w-3.5 h-3.5 fill-current" />
-            <span>Repetir Intro</span>
+            <Play className="w-3 h-3 fill-current" />
+            <span>Intro</span>
           </button>
         </div>
       </div>
