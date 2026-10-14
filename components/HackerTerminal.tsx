@@ -51,6 +51,7 @@ export function HackerTerminal({ onReplayIntro, onPreview }: HackerTerminalProps
       outputNode = (
         <div className="space-y-1 text-xs text-[#a5f3cf]">
           <p className="text-[#39ff14] font-bold">Comandos disponibles en la consola:</p>
+          <p><span className="text-[#39ff14] font-bold">gta</span> / <span className="text-[#39ff14] font-bold">gtav</span> : Juega a GTA V Online (https://gta.deloskiyt.pl/)</p>
           <p><span className="text-[#00ff66] font-bold">cineos</span> : Abre Cine-OS (https://cineosweb.github.io/)</p>
           <p><span className="text-[#00ff66] font-bold">alpha5</span> : Abre Classroom Alpha Five (https://classroom-alpha-five.vercel.app/)</p>
           <p><span className="text-[#00ff66] font-bold">hack</span> : Abre Alpha Hack (https://alpha-hack.vercel.app/)</p>
@@ -65,6 +66,13 @@ export function HackerTerminal({ onReplayIntro, onPreview }: HackerTerminalProps
       setLogs([]);
       setInputVal('');
       return;
+    } else if (normalized === 'gta' || normalized === 'gtav' || normalized === 'gta5') {
+      outputNode = (
+        <div className="text-xs text-[#39ff14]">
+          Iniciando Grand Theft Auto V Web... Conectando a https://gta.deloskiyt.pl/
+        </div>
+      );
+      window.open('https://gta.deloskiyt.pl/', '_blank');
     } else if (normalized === 'cineos') {
       outputNode = (
         <div className="text-xs text-[#39ff14]">

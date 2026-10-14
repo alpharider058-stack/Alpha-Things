@@ -26,6 +26,15 @@ export function CyberFooter() {
         {/* Center: Direct Link Shortcuts */}
         <div className="flex flex-wrap items-center justify-center gap-4 text-[11px]">
           <a
+            href="https://gta.deloskiyt.pl/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[#39ff14] text-[#39ff14] font-semibold transition-colors"
+          >
+            GTA V
+          </a>
+          <span>·</span>
+          <a
             href="https://cineosweb.github.io/"
             target="_blank"
             rel="noopener noreferrer"

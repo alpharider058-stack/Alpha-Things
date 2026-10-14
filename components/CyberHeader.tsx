@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Play, Volume2, VolumeX, Terminal, ExternalLink } from 'lucide-react';
 import { cyberAudio } from '@/lib/audio';
 
@@ -28,7 +29,7 @@ export function CyberHeader({
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[#030704]/90 border-b border-[#00ff66]/25 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
-        {/* Zone 1: Brand Wordmark (Single text element) */}
+        {/* Zone 1: Brand Wordmark with Classroom Logo */}
         <div className="flex items-center gap-3 shrink-0">
           <a
             href="#"
@@ -36,14 +37,33 @@ export function CyberHeader({
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="font-cyber font-black text-xl tracking-wider text-[#00ff66] hover:text-[#39ff14] transition-colors whitespace-nowrap text-neon"
+            className="flex items-center gap-2.5 group"
           >
-            Alpha-Things
+            <div className="w-8 h-8 relative rounded-lg overflow-hidden border border-[#00ff66]/30 shadow-[0_0_10px_rgba(0,255,102,0.25)] group-hover:scale-105 transition-transform bg-[#051108] p-0.5">
+              <Image
+                src="/classroom-logo.svg"
+                alt="Classroom"
+                width={32}
+                height={32}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <span className="font-cyber font-black text-xl tracking-wider text-[#00ff66] group-hover:text-[#39ff14] transition-colors whitespace-nowrap text-neon">
+              Alpha-Things
+            </span>
           </a>
         </div>
 
         {/* Zone 2: 4 Clean Single-Line Nav Links */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-mono text-[#a5f3cf]">
+          <button
+            onClick={() => handleNavClick('gta-v')}
+            className="text-[#39ff14] font-semibold hover:text-[#00ff66] transition-colors whitespace-nowrap shrink-0 hover:underline underline-offset-8 decoration-[#39ff14]/70 flex items-center gap-1.5"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#39ff14] animate-pulse" />
+            GTA V
+          </button>
           <button
             onClick={() => handleNavClick('cine-os')}
             className="hover:text-[#00ff66] transition-colors whitespace-nowrap shrink-0 hover:underline underline-offset-8 decoration-[#00ff66]/50"

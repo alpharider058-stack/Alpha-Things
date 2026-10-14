@@ -12,7 +12,7 @@ import {
   Monitor,
   Shield,
   Layers,
-  Sparkles,
+  Gamepad2,
 } from 'lucide-react';
 import { cyberAudio } from '@/lib/audio';
 
@@ -32,6 +32,17 @@ interface AlphaLinkItem {
 }
 
 const ALPHA_LINKS: AlphaLinkItem[] = [
+  {
+    id: 'gta-v-web',
+    title: 'GTA V Online (Web)',
+    url: 'https://gta.deloskiyt.pl/',
+    category: 'Gaming & Emulación Web',
+    description:
+      'Juega a Grand Theft Auto V directamente en tu navegador web. Acceso instantáneo sin descargas con controles completos y aceleración WebGL.',
+    icon: Gamepad2,
+    specs: ['GTA V WEB', 'DELOSKIYT.PL', 'JUEGO ONLINE'],
+    accentColor: '#39ff14',
+  },
   {
     id: 'classroom-alpha-five',
     title: 'Classroom Alpha Five',

@@ -37,6 +37,14 @@ export function HeroSection({ onReplayIntro }: HeroSectionProps) {
       {/* Primary CTA Buttons */}
       <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
         <button
+          onClick={() => scrollTo('gta-v')}
+          className="flex items-center gap-2 px-6 py-3.5 text-xs sm:text-sm font-cyber font-bold tracking-wider text-[#030704] bg-[#39ff14] hover:bg-[#00ff66] rounded transition-all shadow-[0_0_20px_rgba(57,255,20,0.6)] hover:shadow-[0_0_30px_rgba(57,255,20,0.9)] hover:scale-105 active:scale-95"
+        >
+          <span>JUGAR A GTA V</span>
+          <ArrowDown className="w-4 h-4" />
+        </button>
+
+        <button
           onClick={() => scrollTo('cine-os')}
           className="flex items-center gap-2 px-6 py-3.5 text-xs sm:text-sm font-cyber font-bold tracking-wider text-[#030704] bg-[#00ff66] hover:bg-[#39ff14] rounded transition-all shadow-[0_0_20px_rgba(0,255,102,0.5)] hover:shadow-[0_0_30px_rgba(57,255,20,0.8)] hover:scale-105 active:scale-95"
         >
@@ -68,7 +76,7 @@ export function HeroSection({ onReplayIntro }: HeroSectionProps) {
       <div id="telemetria" className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto p-4 bg-[#030a05]/80 border border-[#00ff66]/25 rounded-lg box-neon text-left font-mono">
         <div className="p-2 border-r border-[#00ff66]/15">
           <div className="text-[10px] text-[#00ff66]/60">NODOS CONECTADOS</div>
-          <div className="text-sm font-bold text-[#39ff14] tabular-nums">4 / 4 ONLINE</div>
+          <div className="text-sm font-bold text-[#39ff14] tabular-nums">5 / 5 ONLINE</div>
         </div>
         <div className="p-2 md:border-r border-[#00ff66]/15">
           <div className="text-[10px] text-[#00ff66]/60">ENCRIPTACIÓN</div>

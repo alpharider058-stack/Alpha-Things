@@ -6,6 +6,7 @@ import { IntroSequence } from '@/components/IntroSequence';
 import { CyberHeader } from '@/components/CyberHeader';
 import { HeroSection } from '@/components/HeroSection';
 import { FeaturedCineOS } from '@/components/FeaturedCineOS';
+import { GtaSection } from '@/components/GtaSection';
 import { AlphaLinksSection } from '@/components/AlphaLinksSection';
 import { HackerTerminal } from '@/components/HackerTerminal';
 import { CyberFooter } from '@/components/CyberFooter';
@@ -74,6 +75,9 @@ export default function Home() {
             {/* Main Content Body */}
             <div className="flex-1">
               <HeroSection onReplayIntro={handleReplayIntro} />
+
+              {/* Section: GTA V Web Edition */}
+              <GtaSection onPreview={handleOpenPreview} />
 
               {/* Section 1: Cine-OS Spotlight */}
               <FeaturedCineOS onPreview={handleOpenPreview} />
