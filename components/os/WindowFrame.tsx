@@ -189,7 +189,7 @@ export function WindowFrame({
       onClick={onFocus}
       className={`flex flex-col rounded-2xl overflow-hidden select-none transition-shadow duration-200 border ${
         isActive
-          ? 'shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),0_0_35px_rgba(56,189,248,0.22)] border-white/25 ring-1 ring-white/10'
+          ? 'shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),0_0_35px_var(--accent-glow)] border-white/25 ring-1 ring-white/10'
           : 'shadow-[0_15px_40px_-10px_rgba(0,0,0,0.7)] border-white/10 opacity-95'
       } bg-[#080a12]/95 backdrop-blur-2xl`}
     >

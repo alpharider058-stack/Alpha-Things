@@ -5,14 +5,16 @@ import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { BootScreen } from '@/components/os/BootScreen';
 import { LockScreen } from '@/components/os/LockScreen';
 import { Desktop } from '@/components/os/Desktop';
+import { getCustomization, applyCssVariables } from '@/lib/customization';
 
 function OSContent() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const [osPhase, setOsPhase] = useState<'boot' | 'lock' | 'desktop'>('boot');
 
-  // Enforce tab title 'Inicio - Classroom' as requested
+  // Enforce tab title 'Inicio - Classroom' and init CSS variables
   useEffect(() => {
     document.title = 'Inicio - Classroom';
+    applyCssVariables(getCustomization());
   }, []);
 
   const handleBootComplete = () => {

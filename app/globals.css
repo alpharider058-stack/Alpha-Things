@@ -6,12 +6,14 @@
   --os-bg: #090a0f;
   --glass-surface: rgba(18, 20, 29, 0.65);
   --glass-surface-hover: rgba(28, 32, 45, 0.78);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-highlight: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-highlight: rgba(255, 255, 255, 0.2);
   --glass-specular: rgba(255, 255, 255, 0.15);
-  --accent-blue: #38bdf8;
-  --accent-purple: #a855f7;
-  --accent-emerald: #10b981;
+  --accent-color: #38bdf8;
+  --accent-glow: rgba(56, 189, 248, 0.45);
+  --accent-rgb: 56, 189, 248;
+  --screen-brightness: 1;
+  --dock-icon-size: 48px;
 }
 
 body {
@@ -48,66 +50,61 @@ body {
   font-family: 'Rajdhani', sans-serif;
 }
 
-/* Liquid Glass Theme Classes */
+/* Premium Glassmorphism Theme Classes with anti-banding microtexture */
 .liquid-glass {
-  background: rgba(15, 17, 26, 0.62);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.015) 100%), rgba(14, 17, 27, 0.68);
+  backdrop-filter: blur(34px) saturate(200%);
+  -webkit-backdrop-filter: blur(34px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
 }
 
 .liquid-glass-dock {
-  background: rgba(14, 16, 24, 0.52);
-  backdrop-filter: blur(36px) saturate(210%);
-  -webkit-backdrop-filter: blur(36px) saturate(210%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), inset 0 1px 1px 0 rgba(255, 255, 255, 0.28);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(255, 255, 255, 0.005) 100%), rgba(12, 14, 23, 0.58);
+  backdrop-filter: blur(42px) saturate(220%);
+  -webkit-backdrop-filter: blur(42px) saturate(220%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 28px 70px -10px rgba(0, 0, 0, 0.85), inset 0 1px 1px 0 rgba(255, 255, 255, 0.28);
 }
 
 .liquid-glass-panel {
-  background: rgba(12, 14, 22, 0.75);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(11, 13, 21, 0.82);
+  backdrop-filter: blur(38px) saturate(190%);
+  -webkit-backdrop-filter: blur(38px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 32px 85px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
 }
 
 .liquid-glass-card {
   background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .liquid-glass-card:hover {
   background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.22);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
 }
 
 .liquid-glass-input {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: #ffffff;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
 }
 
 .liquid-glass-input:focus {
-  border-color: rgba(56, 189, 248, 0.7);
-  box-shadow: 0 0 15px rgba(56, 189, 248, 0.25), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 18px var(--accent-glow), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
   outline: none;
-}
-
-/* Dark Specular Highlights */
-.specular-rim {
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.2);
@@ -117,7 +114,7 @@ body {
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.35);
 }
 
 /* Wallpapers */
@@ -145,4 +142,54 @@ body {
 
 .bg-wallpaper-deep-abyss {
   background: #050508;
+}
+
+/* Animated Dynamic CSS Wallpapers */
+@keyframes auroraPulse {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.bg-wallpaper-animated-aurora {
+  background: linear-gradient(125deg, #0f172a, #1e1b4b, #042f2e, #1e3a8a, #090a0f);
+  background-size: 300% 300%;
+  animation: auroraPulse 18s ease infinite;
+}
+
+.bg-wallpaper-animated-cyber {
+  background: radial-gradient(circle at 50% 50%, #13112c 0%, #090a12 60%, #030308 100%),
+              linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 36px 36px, 36px 36px;
+  animation: auroraPulse 25s linear infinite;
+}
+
+.bg-wallpaper-animated-sunset {
+  background: linear-gradient(135deg, #31102f 0%, #1e112a 35%, #180d1e 70%, #08060d 100%);
+  background-size: 200% 200%;
+  animation: auroraPulse 14s ease-in-out infinite;
+}
+
+/* Dynamic Accent Helpers */
+.text-accent {
+  color: var(--accent-color);
+}
+.bg-accent {
+  background-color: var(--accent-color);
+}
+.border-accent {
+  border-color: var(--accent-color);
+}
+.ring-accent {
+  --tw-ring-color: var(--accent-color);
+}
+.shadow-accent-glow {
+  box-shadow: 0 0 20px var(--accent-glow);
 }
