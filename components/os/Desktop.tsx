@@ -9,7 +9,6 @@ import { MenuBar } from './MenuBar';
 import { Dock } from './Dock';
 import { WindowFrame } from './WindowFrame';
 import { SettingsApp } from './SettingsApp';
-import { BrowserApp } from './BrowserApp';
 import { ControlCenter } from './ControlCenter';
 import { AddAppModal } from './AddAppModal';
 import { osAudio } from '@/lib/audio';
@@ -74,6 +73,23 @@ export function Desktop({ onLockScreen }: DesktopProps) {
   // Launch or Focus App
   const handleLaunchApp = useCallback(
     (app: OSApp) => {
+      // If AI app (and not Manus), directly open the floating popup window of that AI!
+      if (app.category === 'ai' && app.id !== 'manus') {
+        osAudio.playWindowOpen();
+        if (typeof window !== 'undefined' && app.defaultUrl) {
+          const w = Math.min(1180, window.innerWidth > 200 ? window.innerWidth - 60 : 1180);
+          const h = Math.min(820, window.innerHeight > 200 ? window.innerHeight - 80 : 820);
+          const left = Math.max(20, Math.floor((window.innerWidth - w) / 2));
+          const top = Math.max(35, Math.floor((window.innerHeight - h) / 2));
+          window.open(
+            app.defaultUrl,
+            `floating_${app.id}`,
+            `width=${w},height=${h},top=${top},left=${left},scrollbars=yes,resizable=yes,status=no,location=no,toolbar=no,menubar=no`
+          );
+        }
+        return;
+      }
+
       setWindows((prev) => {
         const existing = prev.find((w) => w.appId === app.id);
         const z = nextZIndex + 1;
@@ -122,7 +138,7 @@ export function Desktop({ onLockScreen }: DesktopProps) {
           position: { x: spawnX, y: spawnY },
           size: { width: defaultWidth, height: defaultHeight },
           activeTab: app.id === 'mantle' ? 'alpha-five' : undefined,
-          activeView: app.aiDetails ? 'info' : 'web',
+          activeView: 'web',
         };
 
         osAudio.playWindowOpen();
@@ -333,8 +349,6 @@ export function Desktop({ onLockScreen }: DesktopProps) {
           >
             {/* If the window is Settings App, render the dedicated settings panel inside */}
             {app.id === 'settings' && <SettingsApp />}
-            {/* If the window is Browser App, render the dedicated hybrid browser engine */}
-            {app.id === 'browser' && <BrowserApp onClose={() => handleCloseWindow(win.id)} />}
           </WindowFrame>
         );
       })}

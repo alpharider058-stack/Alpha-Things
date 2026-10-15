@@ -7,6 +7,7 @@ export interface OSApp {
   accentColor: string;
   defaultUrl?: string;
   isBuiltIn?: boolean;
+  isExternalProtected?: boolean;
   defaultWidth?: number;
   defaultHeight?: number;
   badge?: string;
@@ -39,7 +40,7 @@ export interface OSWindow {
   position: { x: number; y: number };
   size: { width: number; height: number };
   activeTab?: string;
-  activeView?: 'web' | 'info';
+  activeView?: 'web' | 'info' | 'app';
 }
 
 export const SYSTEM_APPS: OSApp[] = [
@@ -57,16 +58,44 @@ export const SYSTEM_APPS: OSApp[] = [
     mantleModes: [
       {
         id: 'alpha-five',
-        label: 'Classroom Alpha Five',
+        label: 'Hub Mantle',
         url: 'https://classroom-alpha-five.vercel.app/',
         description: 'Aula digital colaborativa para gestión de tareas, clases y asignaturas.',
         icon: '🎓',
       },
       {
+        id: 'mineral',
+        label: 'Mineral (Minecraft)',
+        url: 'https://dobberr.github.io/min/',
+        description: 'Minecraft completo ejecutable directamente en el navegador.',
+        icon: '⛏️',
+      },
+      {
+        id: 'magma',
+        label: 'Magma (Navegador)',
+        url: 'https://magma3-mantle.laneesports.com/',
+        description: 'Navegador web sin restricciones integrado.',
+        icon: '🔥',
+      },
+      {
+        id: 'slate',
+        label: 'Slate (IA)',
+        url: 'https://slate-mantle.laneesports.com/',
+        description: 'Chat con modelos avanzados de inteligencia artificial.',
+        icon: '✨',
+      },
+      {
+        id: 'basalt',
+        label: 'Basalt (Shooter FPS)',
+        url: 'https://basalt.mantle.dpdns.org/',
+        description: 'Juego shooter multijugador 3D.',
+        icon: '🎯',
+      },
+      {
         id: 'biologia',
         label: 'Classroom Biología',
         url: 'https://classroom-biologia.vercel.app/',
-        description: 'Módulo de ciencias naturales, anatomía interactiva y materiales de biología.',
+        description: 'Módulo de ciencias naturales y materiales de biología.',
         icon: '🧬',
       },
       {
@@ -79,18 +108,6 @@ export const SYSTEM_APPS: OSApp[] = [
     ],
   },
   {
-    id: 'browser',
-    name: 'Navegador',
-    description: 'Navegador web híbrido con soporte para Cloud VM (Hyperbeam), proxies y web abierta.',
-    category: 'tools',
-    icon: '/apps/browser.svg',
-    accentColor: '#38bdf8',
-    defaultUrl: 'https://www.bing.com',
-    defaultWidth: 1060,
-    defaultHeight: 700,
-    badge: 'HYBRID VM',
-  },
-  {
     id: 'gtav',
     name: 'GTA V Online',
     description: 'Grand Theft Auto V playable en el navegador con aceleración WebGL.',
@@ -101,6 +118,18 @@ export const SYSTEM_APPS: OSApp[] = [
     defaultWidth: 1100,
     defaultHeight: 700,
     badge: 'WEBGL',
+  },
+  {
+    id: 'minecraft',
+    name: 'Minecraft (Eaglecraft)',
+    description: 'Minecraft completo ejecutable directamente en el navegador con aceleración WebGL.',
+    category: 'games',
+    icon: '/apps/minecraft.svg',
+    accentColor: '#5c8e32',
+    defaultUrl: 'https://duck.coldcallbot.com/class/eagle-craft',
+    defaultWidth: 1080,
+    defaultHeight: 680,
+    badge: 'WEBGL 3D',
   },
   {
     id: 'cineos',
@@ -122,8 +151,8 @@ export const SYSTEM_APPS: OSApp[] = [
     icon: '/apps/perplexity.svg',
     accentColor: '#22d3ee',
     defaultUrl: 'https://www.perplexity.ai/',
-    defaultWidth: 980,
-    defaultHeight: 660,
+    defaultWidth: 1000,
+    defaultHeight: 680,
     badge: 'SEARCH AI',
     aiDetails: {
       tagline: 'Motor de Búsqueda Conversacional con Fuentes en Tiempo Real',
@@ -148,8 +177,8 @@ export const SYSTEM_APPS: OSApp[] = [
     icon: '/apps/claude.svg',
     accentColor: '#d97757',
     defaultUrl: 'https://claude.ai/',
-    defaultWidth: 980,
-    defaultHeight: 660,
+    defaultWidth: 1000,
+    defaultHeight: 680,
     badge: 'REASONING',
     aiDetails: {
       tagline: 'Razonamiento Complejo, Escritura Humana y Programación de Élite',
@@ -174,8 +203,8 @@ export const SYSTEM_APPS: OSApp[] = [
     icon: '/apps/manus.svg',
     accentColor: '#a1a1aa',
     defaultUrl: 'https://manus.im/app',
-    defaultWidth: 980,
-    defaultHeight: 660,
+    defaultWidth: 1000,
+    defaultHeight: 680,
     badge: 'GENERAL AGENT',
     aiDetails: {
       tagline: 'Agente General Autónomo para Ejecución de Tareas Complejas',
@@ -200,8 +229,8 @@ export const SYSTEM_APPS: OSApp[] = [
     icon: '/apps/copilot.svg',
     accentColor: '#38bdf8',
     defaultUrl: 'https://copilot.microsoft.com/',
-    defaultWidth: 980,
-    defaultHeight: 660,
+    defaultWidth: 1000,
+    defaultHeight: 680,
     badge: 'ASSISTANT',
     aiDetails: {
       tagline: 'Compañero Cotidiano Integrado con Bing, DALL-E y Productividad',
@@ -226,8 +255,8 @@ export const SYSTEM_APPS: OSApp[] = [
     icon: '/apps/arena.svg',
     accentColor: '#f59e0b',
     defaultUrl: 'https://arena.ai/text/direct?model_a=max',
-    defaultWidth: 1040,
-    defaultHeight: 680,
+    defaultWidth: 1060,
+    defaultHeight: 700,
     badge: 'BENCHMARK',
     aiDetails: {
       tagline: 'Coliseo de Evaluación Comparativa a Doble Ciego entre Modelos',

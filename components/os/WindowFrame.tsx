@@ -12,13 +12,11 @@ import {
   ExternalLink,
   Copy,
   Check,
-  Globe,
   Info,
-  Shield,
   Sparkles,
   ArrowRight,
-  Monitor,
-  AlertCircle,
+  AppWindow,
+  Lock,
 } from 'lucide-react';
 import { OSApp, OSWindow } from '@/types/os';
 import { osAudio } from '@/lib/audio';
@@ -45,12 +43,10 @@ export function WindowFrame({
   children,
 }: WindowFrameProps) {
   const [activeMantleTab, setActiveMantleTab] = useState<string>('alpha-five');
-  const [activeAiTab, setActiveAiTab] = useState<'info' | 'web'>(() =>
-    app.aiDetails ? 'info' : 'web'
-  );
+  const [showGuide, setShowGuide] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
   const [iframeKey, setIframeKey] = useState<number>(0);
-  const [showEmbedNotice, setShowEmbedNotice] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Dragging state
   const [pos, setPos] = useState({ x: win.position.x, y: win.position.y });
@@ -84,21 +80,43 @@ export function WindowFrame({
 
   const handleReload = () => {
     osAudio.playClick(600, 0.04);
+    setIsLoading(true);
     setIframeKey((prev) => prev + 1);
   };
 
   const handleOpenExternal = () => {
-    osAudio.playClick();
+    osAudio.playClick(950, 0.05);
     if (currentUrl) {
       window.open(currentUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
+  // Launch a standalone frameless pop-up desktop window
+  const handleOpenStandalonePopup = () => {
+    osAudio.playClick(850, 0.04);
+    if (currentUrl) {
+      const width = Math.min(1200, window.innerWidth - 60);
+      const height = Math.min(820, window.innerHeight - 80);
+      const left = Math.max(30, (window.innerWidth - width) / 2);
+      const top = Math.max(40, (window.innerHeight - height) / 2);
+
+      window.open(
+        currentUrl,
+        `popup_${app.id}`,
+        `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,status=no,resizable=yes`
+      );
+    }
+  };
+
   // Window drag handlers on header
   const handleMouseDownHeader = (e: React.MouseEvent) => {
-    // Don't drag if clicking buttons
     const target = e.target as HTMLElement;
-    if (target.closest('button') || target.closest('a') || win.isMaximized) {
+    if (
+      target.closest('button') ||
+      target.closest('a') ||
+      target.closest('input') ||
+      win.isMaximized
+    ) {
       return;
     }
 
@@ -115,8 +133,14 @@ export function WindowFrame({
       if (!isDraggingRef.current) return;
       const dx = moveEvent.clientX - dragStartRef.current.mouseX;
       const dy = moveEvent.clientY - dragStartRef.current.mouseY;
-      const newX = Math.max(10, Math.min(window.innerWidth - 120, dragStartRef.current.startX + dx));
-      const newY = Math.max(32, Math.min(window.innerHeight - 80, dragStartRef.current.startY + dy));
+      const newX = Math.max(
+        10,
+        Math.min(window.innerWidth - 120, dragStartRef.current.startX + dx)
+      );
+      const newY = Math.max(
+        32,
+        Math.min(window.innerHeight - 80, dragStartRef.current.startY + dy)
+      );
       setPos({ x: newX, y: newY });
     };
 
@@ -130,197 +154,238 @@ export function WindowFrame({
     window.addEventListener('mouseup', handleMouseUp);
   };
 
-  if (!win.isOpen || win.isMinimized) return null;
+  if (!win.isOpen || win.isMinimized) {
+    return null;
+  }
+
+  // Window container styles
+  const windowStyle: React.CSSProperties = win.isMaximized
+    ? {
+        position: 'fixed',
+        top: 32,
+        left: 0,
+        width: '100vw',
+        height: 'calc(100vh - 32px - 80px)',
+        zIndex: win.zIndex,
+      }
+    : {
+        position: 'fixed',
+        left: `${pos.x}px`,
+        top: `${pos.y}px`,
+        width: `${win.size.width}px`,
+        height: `${win.size.height}px`,
+        zIndex: win.zIndex,
+      };
+
+  const domainDisplay = currentUrl ? currentUrl.replace(/^https?:\/\//, '').split('/')[0] : '';
 
   return (
     <motion.div
-      initial={{ scale: 0.94, opacity: 0, y: 15 }}
-      animate={{
-        scale: 1,
-        opacity: 1,
-        y: 0,
-        width: win.isMaximized ? '100vw' : win.size.width,
-        height: win.isMaximized ? 'calc(100vh - 32px)' : win.size.height,
-        left: win.isMaximized ? 0 : pos.x,
-        top: win.isMaximized ? 32 : pos.y,
-      }}
+      initial={{ scale: 0.92, opacity: 0, y: 15 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      exit={{ scale: 0.9, opacity: 0, y: 10 }}
       transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+      style={windowStyle}
       onClick={onFocus}
-      style={{ zIndex: win.zIndex }}
-      className={`fixed flex flex-col rounded-2xl liquid-glass-panel overflow-hidden select-none transition-shadow ${
-        win.isMaximized ? 'rounded-none border-x-0' : 'border border-white/20'
-      } ${
+      className={`flex flex-col rounded-2xl overflow-hidden select-none transition-shadow duration-200 border ${
         isActive
-          ? 'shadow-[0_30px_90px_rgba(0,0,0,0.9)] ring-1 ring-white/30'
-          : 'shadow-[0_15px_45px_rgba(0,0,0,0.55)] opacity-95'
-      }`}
+          ? 'shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),0_0_35px_rgba(56,189,248,0.22)] border-white/25 ring-1 ring-white/10'
+          : 'shadow-[0_15px_40px_-10px_rgba(0,0,0,0.7)] border-white/10 opacity-95'
+      } bg-[#080a12]/95 backdrop-blur-2xl`}
     >
-      {/* Liquid Glass Window Header Bar */}
+      {/* Window Header / Titlebar */}
       <div
         onMouseDown={handleMouseDownHeader}
-        onDoubleClick={onToggleMaximize}
-        className="w-full h-11 px-3.5 liquid-glass flex items-center justify-between border-b border-white/10 cursor-move select-none"
+        className={`h-11 px-3.5 flex items-center justify-between border-b transition-colors ${
+          isActive
+            ? 'bg-gradient-to-r from-white/[0.12] via-white/[0.06] to-white/[0.08] border-white/20'
+            : 'bg-white/[0.04] border-white/10'
+        } cursor-grab active:cursor-grabbing`}
       >
-        {/* Left: Traffic Light Controls */}
+        {/* Left: Window Controls (macOS style liquid glass dots) */}
         <div className="flex items-center gap-2">
-          {/* Close */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onClose();
-            }}
-            className="w-3.5 h-3.5 rounded-full bg-red-500/85 hover:bg-red-500 flex items-center justify-center text-black/90 transition-all cursor-pointer group shadow-sm hover:scale-110"
-            title="Cerrar ventana"
-          >
-            <X className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </button>
+          <div className="flex items-center gap-2 group/controls pr-2">
+            {/* Close */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+              }}
+              className="w-3 h-3 rounded-full bg-rose-500/90 hover:bg-rose-500 flex items-center justify-center transition-all cursor-pointer shadow-[0_0_8px_rgba(244,63,94,0.4)]"
+              title="Cerrar ventana"
+            >
+              <X className="w-2 h-2 text-rose-950 opacity-0 group-hover/controls:opacity-100 transition-opacity" />
+            </button>
 
-          {/* Minimize */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onMinimize();
-            }}
-            className="w-3.5 h-3.5 rounded-full bg-amber-500/85 hover:bg-amber-500 flex items-center justify-center text-black/90 transition-all cursor-pointer group shadow-sm hover:scale-110"
-            title="Minimizar al Dock"
-          >
-            <Minus className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </button>
+            {/* Minimize */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onMinimize();
+              }}
+              className="w-3 h-3 rounded-full bg-amber-500/90 hover:bg-amber-500 flex items-center justify-center transition-all cursor-pointer shadow-[0_0_8px_rgba(245,158,11,0.4)]"
+              title="Minimizar al dock"
+            >
+              <Minus className="w-2 h-2 text-amber-950 opacity-0 group-hover/controls:opacity-100 transition-opacity" />
+            </button>
 
-          {/* Maximize */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleMaximize();
-            }}
-            className="w-3.5 h-3.5 rounded-full bg-emerald-500/85 hover:bg-emerald-500 flex items-center justify-center text-black/90 transition-all cursor-pointer group shadow-sm hover:scale-110"
-            title={win.isMaximized ? 'Restaurar tamaño' : 'Maximizar'}
-          >
-            {win.isMaximized ? (
-              <Minimize2 className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-            ) : (
-              <Maximize2 className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+            {/* Maximize */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleMaximize();
+              }}
+              className="w-3 h-3 rounded-full bg-emerald-500/90 hover:bg-emerald-500 flex items-center justify-center transition-all cursor-pointer shadow-[0_0_8px_rgba(16,185,129,0.4)]"
+              title={win.isMaximized ? 'Restaurar ventana' : 'Maximizar'}
+            >
+              {win.isMaximized ? (
+                <Minimize2 className="w-2 h-2 text-emerald-950 opacity-0 group-hover/controls:opacity-100 transition-opacity" />
+              ) : (
+                <Maximize2 className="w-2 h-2 text-emerald-950 opacity-0 group-hover/controls:opacity-100 transition-opacity" />
+              )}
+            </button>
+          </div>
+
+          {/* App Icon & Name */}
+          <div className="flex items-center gap-2 pl-1">
+            <div className="w-5 h-5 rounded-lg liquid-glass p-0.5 flex items-center justify-center border border-white/20 shadow-sm flex-shrink-0">
+              {app.icon && app.icon.startsWith('/') ? (
+                <Image
+                  src={app.icon}
+                  alt={app.name}
+                  width={16}
+                  height={16}
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <span className="text-xs">{app.icon || '🌐'}</span>
+              )}
+            </div>
+            <span className="text-xs font-semibold text-white/90 drop-shadow-sm truncate max-w-[140px] sm:max-w-[200px]">
+              {app.name}
+            </span>
+            {app.badge && (
+              <span className="hidden md:inline text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-md bg-white/10 text-sky-300 font-semibold border border-white/10">
+                {app.badge}
+              </span>
             )}
-          </button>
-
-          {/* App title and icon */}
-          <div className="flex items-center gap-2 ml-3 pl-3 border-l border-white/15">
-            {app.icon && app.icon.startsWith('/') ? (
-              <Image
-                src={app.icon}
-                alt={app.name}
-                width={18}
-                height={18}
-                className="drop-shadow-sm object-contain"
-              />
-            ) : (
-              <span className="text-sm">{app.icon || '🌐'}</span>
-            )}
-            <span className="text-xs font-semibold text-white tracking-wide">{app.name}</span>
           </div>
         </div>
 
-        {/* Center: Tabs Switcher (Mantle & AI Apps) */}
-        <div className="flex items-center gap-1">
-          {app.id === 'mantle' && app.mantleModes && (
-            <div className="flex items-center p-0.5 rounded-xl bg-black/50 border border-white/10 text-xs">
+        {/* Center: URL Address Bar or Mantle Modes */}
+        <div className="flex items-center justify-center flex-1 mx-2 max-w-xl">
+          {app.id === 'mantle' && app.mantleModes ? (
+            <div className="flex items-center gap-1 p-0.5 rounded-xl bg-black/60 border border-white/10 text-xs shadow-inner overflow-x-auto max-w-full scrollbar-none">
               {app.mantleModes.map((mode) => (
                 <button
                   key={mode.id}
                   onClick={(e) => {
                     e.stopPropagation();
                     setActiveMantleTab(mode.id);
-                    osAudio.playClick(750, 0.03);
+                    setIsLoading(true);
+                    osAudio.playClick(650, 0.03);
                   }}
-                  className={`px-3 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-medium flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap flex-shrink-0 ${
                     activeMantleTab === mode.id
                       ? 'bg-purple-600 text-white shadow-sm'
-                      : 'text-white/60 hover:text-white'
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
+                  title={mode.description}
                 >
                   <span>{mode.icon}</span>
                   <span>{mode.label}</span>
                 </button>
               ))}
             </div>
-          )}
-
-          {app.aiDetails && (
-            <div className="flex items-center p-0.5 rounded-xl bg-black/50 border border-white/10 text-xs">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveAiTab('info');
-                  osAudio.playClick();
-                }}
-                className={`px-3 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer ${
-                  activeAiTab === 'info'
-                    ? 'bg-purple-600 text-white shadow-sm font-semibold'
-                    : 'text-white/60 hover:text-white'
-                }`}
-              >
-                <Info className="w-3.5 h-3.5" />
-                <span>Guía & Cuándo Usar</span>
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveAiTab('web');
-                  osAudio.playClick();
-                }}
-                className={`px-3 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer ${
-                  activeAiTab === 'web'
-                    ? 'bg-sky-500 text-white shadow-sm font-semibold'
-                    : 'text-white/60 hover:text-white'
-                }`}
-              >
-                <Globe className="w-3.5 h-3.5" />
-                <span>Navegador Web</span>
-              </button>
+          ) : currentUrl ? (
+            <div className="flex items-center gap-2 w-full max-w-md justify-center">
+              {/* Clean modern address bar with SSL lock */}
+              <div className="flex items-center gap-2 px-3 py-1 rounded-xl bg-black/50 border border-white/10 text-xs text-white/80 shadow-inner w-full justify-between">
+                <div className="flex items-center gap-1.5 overflow-hidden">
+                  <Lock className="w-3 h-3 text-emerald-400 flex-shrink-0" />
+                  <span className="font-mono text-[11px] text-white/90 font-medium truncate">
+                    {domainDisplay}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 flex-shrink-0 text-white/50">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleReload();
+                    }}
+                    className="p-1 rounded-md hover:bg-white/10 hover:text-white transition-colors cursor-pointer"
+                    title="Recargar"
+                  >
+                    <RotateCw className="w-3 h-3" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCopyUrl();
+                    }}
+                    className="p-1 rounded-md hover:bg-white/10 hover:text-white transition-colors cursor-pointer"
+                    title="Copiar URL"
+                  >
+                    {copied ? (
+                      <Check className="w-3 h-3 text-emerald-400" />
+                    ) : (
+                      <Copy className="w-3 h-3" />
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
-          )}
+          ) : null}
         </div>
 
         {/* Right: Window Utilities */}
-        <div className="flex items-center gap-1 text-white/70">
-          {currentUrl && app.id !== 'browser' && (
+        <div className="flex items-center gap-1.5 text-white/70">
+          {/* Guide toggle button (if app has guide info, e.g. Manus) */}
+          {app.aiDetails && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowGuide((prev) => !prev);
+                osAudio.playClick();
+              }}
+              className={`px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer ${
+                showGuide
+                  ? 'bg-purple-600 text-white shadow-sm'
+                  : 'hover:bg-white/10 text-white/70 hover:text-white'
+              }`}
+              title={showGuide ? 'Volver a la App' : 'Ver Guía y Especificaciones'}
+            >
+              <Info className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{showGuide ? 'App' : 'Guía'}</span>
+            </button>
+          )}
+
+          {currentUrl && (
             <>
+              {/* Standalone Desktop Popup */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleReload();
+                  handleOpenStandalonePopup();
                 }}
-                className="p-1.5 rounded-lg hover:bg-white/10 text-white/70 hover:text-white transition-colors cursor-pointer"
-                title="Recargar vista"
+                className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white/90 hover:text-white text-xs font-medium flex items-center gap-1.5 transition-all cursor-pointer border border-white/10"
+                title="Abrir como ventana flotante dedicada en tu pantalla"
               >
-                <RotateCw className="w-3.5 h-3.5" />
+                <AppWindow className="w-3.5 h-3.5 text-sky-400" />
+                <span className="hidden sm:inline">Flotante</span>
               </button>
 
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleCopyUrl();
-                }}
-                className="p-1.5 rounded-lg hover:bg-white/10 text-white/70 hover:text-white transition-colors cursor-pointer"
-                title="Copiar URL"
-              >
-                {copied ? (
-                  <Check className="w-3.5 h-3.5 text-emerald-400" />
-                ) : (
-                  <Copy className="w-3.5 h-3.5" />
-                )}
-              </button>
-
+              {/* External Tab */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleOpenExternal();
                 }}
-                className="ml-1 px-2.5 py-1 rounded-lg liquid-glass text-xs text-sky-400 hover:text-sky-300 font-medium flex items-center gap-1.5 transition-all cursor-pointer shadow-sm border border-sky-400/30 hover:border-sky-400/60"
+                className="px-2.5 py-1 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm border border-sky-500/30 hover:border-sky-400"
                 title="Abrir en pestaña externa completa"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline text-[11px] font-semibold">Abrir Oficial</span>
+                <span className="hidden sm:inline">Pestaña</span>
               </button>
             </>
           )}
@@ -329,11 +394,11 @@ export function WindowFrame({
 
       {/* Window Body */}
       <div className="relative flex-1 w-full bg-[#080a12]/95 overflow-hidden flex flex-col">
-        {/* Custom children (e.g. Browser or Settings app) */}
+        {/* Custom child components (e.g. Settings App) */}
         {children ? (
           <div className="flex-1 w-full h-full overflow-hidden flex flex-col">{children}</div>
-        ) : app.aiDetails && activeAiTab === 'info' ? (
-          /* Rich AI Specifications & Guide */
+        ) : showGuide && app.aiDetails ? (
+          /* Rich Specifications & Guide (Displayed only when user explicitly toggles 'Guía') */
           <div className="flex-1 overflow-y-auto p-6 md:p-8 max-w-4xl mx-auto w-full">
             <div className="flex items-start gap-5 mb-6 pb-6 border-b border-white/10">
               <div className="w-16 h-16 rounded-2xl liquid-glass flex items-center justify-center p-2.5 border border-white/20 shadow-lg flex-shrink-0">
@@ -369,11 +434,11 @@ export function WindowFrame({
                 </p>
               </div>
 
-              {/* When to use it */}
+              {/* When to use */}
               <div className="liquid-glass rounded-2xl p-5 border border-white/10">
-                <div className="flex items-center gap-2 text-purple-400 text-xs font-semibold uppercase tracking-wider mb-2.5">
+                <div className="flex items-center gap-2 text-amber-400 text-xs font-semibold uppercase tracking-wider mb-2.5">
                   <ArrowRight className="w-4 h-4" />
-                  <span>¿Cuándo deberías usarla?</span>
+                  <span>¿Cuándo conviene usarla?</span>
                 </div>
                 <p className="text-xs text-white/80 leading-relaxed font-inter">
                   {app.aiDetails.whenToUse}
@@ -381,91 +446,82 @@ export function WindowFrame({
               </div>
             </div>
 
-            {/* Strengths & Highlights */}
+            {/* Strengths */}
             <div className="liquid-glass rounded-2xl p-5 border border-white/10 mb-6">
-              <h3 className="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-3">
-                Puntos Fuertes & Ventajas Clave
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-3">
+                Puntos Fuertes y Ventajas
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {app.aiDetails.strengths.map((str, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs text-white/85">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {app.aiDetails.strengths.map((strength, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/5 border border-white/5 text-xs text-white/90"
+                  >
                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span>{str}</span>
+                    <span>{strength}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
-              <div className="text-xs text-white/70">
-                <span className="font-semibold text-white">Recomendado para: </span>
-                {app.aiDetails.recommendedFor}
-              </div>
-              <div className="flex items-center gap-2 ml-4">
+            {/* Recommended For & Launch buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
+              <p className="text-xs text-white/60">
+                <strong className="text-white">Ideal para:</strong> {app.aiDetails.recommendedFor}
+              </p>
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <button
-                  onClick={() => setActiveAiTab('web')}
-                  className="px-3 py-2 rounded-xl liquid-glass text-white text-xs font-medium flex items-center gap-1.5 hover:bg-white/15 cursor-pointer"
+                  onClick={() => setShowGuide(false)}
+                  className="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-semibold text-xs shadow-lg transition-all cursor-pointer"
                 >
-                  <Globe className="w-3.5 h-3.5" />
-                  <span>Embeber</span>
+                  Volver a la App
                 </button>
                 <button
-                  onClick={handleOpenExternal}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md cursor-pointer whitespace-nowrap"
+                  onClick={handleOpenStandalonePopup}
+                  className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition-all cursor-pointer flex items-center gap-1.5"
                 >
-                  <span>Abrir {app.name}</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <AppWindow className="w-3.5 h-3.5 text-sky-400" />
+                  <span>Flotante</span>
                 </button>
               </div>
             </div>
           </div>
         ) : (
-          /* Live Web Application Viewport */
-          <div className="relative flex-1 w-full h-full bg-[#0a0d14] flex flex-col">
-            {/* Top Minimal Security & Bridge Bar */}
-            <div className="w-full px-3 py-1.5 bg-black/50 border-b border-white/10 flex items-center justify-between text-[11px] text-white/60">
-              <div className="flex items-center gap-2 overflow-hidden">
-                <Shield className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                <span className="text-emerald-400 font-mono text-[10px]">Conexión Segura</span>
-                <span className="text-white/20">|</span>
-                <span className="truncate text-white/80 font-mono max-w-xs md:max-w-md">{currentUrl}</span>
-              </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <button
-                  onClick={handleOpenExternal}
-                  className="px-2.5 py-1 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/30 text-[11px] font-medium flex items-center gap-1 cursor-pointer transition-colors"
+          /* Live Viewport */
+          <div className="relative flex-1 w-full h-full bg-[#07090e] flex flex-col">
+            {/* Loading Indicator */}
+            {isLoading && (
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[#080a12]/95 backdrop-blur-md transition-opacity">
+                <div
+                  className="w-14 h-14 rounded-2xl liquid-glass p-2 border border-white/20 shadow-2xl flex items-center justify-center mb-4 animate-pulse"
+                  style={{ boxShadow: `0 0 35px ${app.accentColor || '#38bdf8'}44` }}
                 >
-                  <span>Abrir en Nueva Pestaña</span>
-                  <ExternalLink className="w-3 h-3" />
-                </button>
+                  {app.icon && app.icon.startsWith('/') ? (
+                    <Image src={app.icon} alt={app.name} width={36} height={36} />
+                  ) : (
+                    <span className="text-2xl">{app.icon || '🌐'}</span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-4 h-4 border-2 border-sky-400 border-t-transparent rounded-full animate-spin" />
+                  <p className="text-xs text-white/90 font-semibold tracking-wide">
+                    Iniciando {app.name}...
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Smart Embedding Bridge Banner */}
-            <div className="px-3 py-1 bg-amber-500/10 border-b border-amber-500/20 flex items-center justify-between text-[11px] text-amber-200">
-              <div className="flex items-center gap-1.5">
-                <AlertCircle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-                <span>
-                  ¿La página no carga o bloquea el visor? Ábrela directamente en pestaña completa con el botón azul.
-                </span>
-              </div>
-              <button
-                onClick={handleOpenExternal}
-                className="underline hover:text-white font-medium ml-2 cursor-pointer whitespace-nowrap"
-              >
-                Abrir ahora
-              </button>
-            </div>
-
-            {/* Iframe Viewport */}
-            <div className="relative flex-1 w-full h-full bg-[#07090e]">
+            {/* Active Live Iframe */}
+            <div className="relative flex-1 w-full h-full">
               <iframe
-                key={iframeKey}
+                key={`${app.id}-${currentUrl}-${iframeKey}`}
                 src={currentUrl}
                 title={app.name}
+                onLoad={() => setIsLoading(false)}
+                onError={() => setIsLoading(false)}
                 className="w-full h-full border-0 bg-white"
-                sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-downloads allow-modals allow-pointer-lock allow-presentation"
+                allow="accelerometer; autoplay; clipboard-read; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen; microphone; camera; display-capture; geolocation; pointer-lock; gamepad; keyboard-map"
               />
             </div>
           </div>
